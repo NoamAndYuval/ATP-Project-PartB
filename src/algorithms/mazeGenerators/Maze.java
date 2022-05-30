@@ -8,12 +8,8 @@ import java.awt.image.IndexColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 import java.util.List;
-
-
 
 
 public class Maze {
@@ -41,21 +37,23 @@ public class Maze {
         this.row = ByteBuffer.wrap(Arrays.copyOfRange(bytes,0,4)).getInt();
         this.col = ByteBuffer.wrap(Arrays.copyOfRange(bytes,4,8)).getInt();
         intMaze = new int[row][col];
-        byte [] bytes1 = ByteBuffer.wrap(Arrays.copyOfRange(bytes,24,bytes.length)).array();
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < bytes1.length; i++) {
-            byte val= bytes1[i];
-            for (int j=0; j<8; j++) {
-                result.append((int)(val >> (8-(j+1)) & 0x0001));
-            }
-        }
-        int index = 0;
-        String str = result.toString();
-        maze_matrix = new Position[row][col];
+        maze_matrix =new Position[row][col];
+//        byte [] bytes1 = ByteBuffer.wrap(Arrays.copyOfRange(bytes,24,bytes.length)).array();
+//        StringBuilder result = new StringBuilder();
+//        for (int i = 0; i < bytes1.length; i++) {
+//            byte val= bytes1[i];
+//            for (int j=0; j<8; j++) {
+//                result.append((int)(val >> (8-(j+1)) & 0x0001));
+//            }
+//        }
+
+//        String str = result.toString();
+//        maze_matrix = new Position[row][col];
+        int index = 24;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j <col ; j++) {
                 maze_matrix[i][j] = new Position(i, j);
-                maze_matrix[i][j].setVal(Character.getNumericValue(str.charAt(index)));
+                maze_matrix[i][j].setVal(bytes[index]);
                 index++;
             }
 
@@ -69,8 +67,6 @@ public class Maze {
         int trgetX =ByteBuffer.wrap(Arrays.copyOfRange(bytes,16,20)).getInt();
         int trgetY =ByteBuffer.wrap(Arrays.copyOfRange(bytes,20,24)).getInt();
         target = maze_matrix[trgetX][trgetY];
-
-
 
     }
 
@@ -217,8 +213,7 @@ public class Maze {
     }
 
     public byte[] toByteArray() {
-        List<Byte> out = new ArrayList<>();
-        List<Byte> MazeByteList = new ArrayList<>();
+        List<Byte> out = new LinkedList<>();
         byte[] rowInByte = ByteBuffer.allocate(4).putInt(row).array();
         byte[] colInByte = ByteBuffer.allocate(4).putInt(col).array();
         byte[] enterPosX = ByteBuffer.allocate(4).putInt(source.getRowIndex()).array();
@@ -231,33 +226,61 @@ public class Maze {
                 list.add(i);
             }
         }
-        int[] temp = new int[8];
-        int index = 0;
-        for (int i = 0; i < list.size(); i++) {
-            temp[index] = list.get(i);
-            index++;
-            if (index == 8) {
-                MazeByteList.add(ConvertBoolArrayToByte(temp));
-                index=0;
-                temp = new int[8];
-            }
-
-        }
-        if (index!=0){
-            MazeByteList.add(ConvertBoolArrayToByte(temp));
-        }
         ArrayToList(rowInByte,out);
         ArrayToList(colInByte,out);
         ArrayToList(enterPosX,out);
         ArrayToList(enterPosY,out);
         ArrayToList(exitPosX,out);
         ArrayToList(exitPosY,out);
-        out.addAll(MazeByteList);
+
+        for(int i :list)
+            out.add((Integer.valueOf(i).byteValue()));
+
         byte[] sul = new byte[out.size()];
         for(int i= 0 ; i<sul.length;i++)
             sul[i]=out.get(i);
         return sul;
-
+//        List<Byte> out = new ArrayList<>();
+//        List<Byte> MazeByteList = new ArrayList<>();
+//        byte[] rowInByte = ByteBuffer.allocate(4).putInt(row).array();
+//        byte[] colInByte = ByteBuffer.allocate(4).putInt(col).array();
+//        byte[] enterPosX = ByteBuffer.allocate(4).putInt(source.getRowIndex()).array();
+//        byte[] enterPosY = ByteBuffer.allocate(4).putInt(source.getColumnIndex()).array();
+//        byte[] exitPosX = ByteBuffer.allocate(4).putInt(target.getRowIndex()).array();
+//        byte[] exitPosY = ByteBuffer.allocate(4).putInt(target.getColumnIndex()).array();
+//        List<Integer> list = new ArrayList<Integer>();
+//        for (int[] array : intMaze) {
+//            for (int i : array) {
+//                list.add(i);
+//            }
+//        }
+//        int[] temp = new int[8];
+//        int index = 0;
+//        for (int i = 0; i < list.size(); i++) {
+//            temp[index] = list.get(i);
+//            index++;
+//            if (index == 8) {
+//                MazeByteList.add(ConvertBoolArrayToByte(temp));
+//                index=0;
+//                temp = new int[8];
+//            }
+//
+//        }
+//        if (index!=0){
+//            MazeByteList.add(ConvertBoolArrayToByte(temp));
+//        }
+//        ArrayToList(rowInByte,out);
+//        ArrayToList(colInByte,out);
+//        ArrayToList(enterPosX,out);
+//        ArrayToList(enterPosY,out);
+//        ArrayToList(exitPosX,out);
+//        ArrayToList(exitPosY,out);
+//        out.addAll(MazeByteList);
+//        byte[] sul = new byte[out.size()];
+//        for(int i= 0 ; i<sul.length;i++)
+//            sul[i]=out.get(i);
+//        return sul;
+//
     }
     private void ArrayToList( byte[] b , List<Byte> lst){
         for(int i = 0; i< b.length;i++){

@@ -10,9 +10,11 @@ public class RunCompressDecompressMaze {
     public static void main(String[] args) {
         String mazeFileName = "savedMaze.maze";
         AMazeGenerator mazeGenerator = new MyMazeGenerator();
-        Maze maze = mazeGenerator.generate(1000, 1000); //Generate new maze
+        Maze maze = mazeGenerator.generate(5, 5); //Generate new maze
         maze.print();
         Maze test = new Maze(maze.toByteArray());
+        System.out.println("**************************************");
+        test.print();
 
 
 //        try {
