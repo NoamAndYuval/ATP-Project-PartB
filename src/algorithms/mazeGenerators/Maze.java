@@ -213,14 +213,14 @@ public class Maze {
     }
 
     public byte[] toByteArray() {
-        List<Byte> out = new LinkedList<>();
+        List<Byte> out = new ArrayList<>();
         byte[] rowInByte = ByteBuffer.allocate(4).putInt(row).array();
         byte[] colInByte = ByteBuffer.allocate(4).putInt(col).array();
         byte[] enterPosX = ByteBuffer.allocate(4).putInt(source.getRowIndex()).array();
         byte[] enterPosY = ByteBuffer.allocate(4).putInt(source.getColumnIndex()).array();
         byte[] exitPosX = ByteBuffer.allocate(4).putInt(target.getRowIndex()).array();
         byte[] exitPosY = ByteBuffer.allocate(4).putInt(target.getColumnIndex()).array();
-        List<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<Integer>();
         for (int[] array : intMaze) {
             for (int i : array) {
                 list.add(i);
@@ -240,74 +240,12 @@ public class Maze {
         for(int i= 0 ; i<sul.length;i++)
             sul[i]=out.get(i);
         return sul;
-//        List<Byte> out = new ArrayList<>();
-//        List<Byte> MazeByteList = new ArrayList<>();
-//        byte[] rowInByte = ByteBuffer.allocate(4).putInt(row).array();
-//        byte[] colInByte = ByteBuffer.allocate(4).putInt(col).array();
-//        byte[] enterPosX = ByteBuffer.allocate(4).putInt(source.getRowIndex()).array();
-//        byte[] enterPosY = ByteBuffer.allocate(4).putInt(source.getColumnIndex()).array();
-//        byte[] exitPosX = ByteBuffer.allocate(4).putInt(target.getRowIndex()).array();
-//        byte[] exitPosY = ByteBuffer.allocate(4).putInt(target.getColumnIndex()).array();
-//        List<Integer> list = new ArrayList<Integer>();
-//        for (int[] array : intMaze) {
-//            for (int i : array) {
-//                list.add(i);
-//            }
-//        }
-//        int[] temp = new int[8];
-//        int index = 0;
-//        for (int i = 0; i < list.size(); i++) {
-//            temp[index] = list.get(i);
-//            index++;
-//            if (index == 8) {
-//                MazeByteList.add(ConvertBoolArrayToByte(temp));
-//                index=0;
-//                temp = new int[8];
-//            }
-//
-//        }
-//        if (index!=0){
-//            MazeByteList.add(ConvertBoolArrayToByte(temp));
-//        }
-//        ArrayToList(rowInByte,out);
-//        ArrayToList(colInByte,out);
-//        ArrayToList(enterPosX,out);
-//        ArrayToList(enterPosY,out);
-//        ArrayToList(exitPosX,out);
-//        ArrayToList(exitPosY,out);
-//        out.addAll(MazeByteList);
-//        byte[] sul = new byte[out.size()];
-//        for(int i= 0 ; i<sul.length;i++)
-//            sul[i]=out.get(i);
-//        return sul;
-//
     }
     private void ArrayToList( byte[] b , List<Byte> lst){
         for(int i = 0; i< b.length;i++){
             lst.add(b[i]);
         }
     }
-
-
-    private  byte ConvertBoolArrayToByte(int[] source) {
-
-        byte result = 0;
-        // This assumes the array never contains more than 8 elements!
-        int index = 8 - source.length;
-
-        // Loop through the array
-        for (int b : source) {
-            // if the element is 'true' set the bit at that position
-            if (b == 1)
-                result |= (byte) (1 << (7 - index));
-
-            index++;
-        }
-
-        return result;
-
-    }
-
 }
 
 
