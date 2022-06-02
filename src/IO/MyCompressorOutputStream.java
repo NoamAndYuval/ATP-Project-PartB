@@ -34,6 +34,11 @@ public class MyCompressorOutputStream extends OutputStream {
     public void write(int b) throws IOException {
 
     }
+
+    public OutputStream getOut() {
+        return out;
+    }
+
     @Override
     public void write(byte[]bytes)throws IOException{
         byte[] bytes1 = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 24, bytes.length)).array();

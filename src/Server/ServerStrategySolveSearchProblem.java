@@ -16,6 +16,7 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
 
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) throws IOException, ClassNotFoundException {
+
         ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
         ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
 
@@ -27,6 +28,9 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
         toClient.writeObject(solution);
 
         toClient.flush();
+
+        toClient.close();
+        fromClient.close();
 
 
 

@@ -20,33 +20,27 @@ public class Server {
     }
 
     public void start() {
-        new Thread(){
-            @Override
-            public void run() {
-                ServerSocket serverSocket = null;
+        new Thread(() -> {
+            ServerSocket serverSocket = null;
+            try {
+
+                serverSocket = new ServerSocket(port);
+                serverSocket.setSoTimeout(listeningIntervalMS);
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+            while (!stop) {
                 try {
+                    Socket clientSocket = serverSocket.accept();
+                    // This thread will handle the new Client
+                    new Thread(() -> { handleClient(clientSocket); }).start();
 
-                    serverSocket = new ServerSocket(port);
-                    serverSocket.setSoTimeout(listeningIntervalMS);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IOException e) {
 
-                }
-                while (!stop) {
-                    try {
-                        Socket clientSocket = serverSocket.accept();
-                        // This thread will handle the new Client
-                        new Thread(() -> {
-                            handleClient(clientSocket);
-                        }).start();
-
-                    } catch (IOException e) {
-
-                    }
                 }
             }
-
-            }.start();
+        }).start();
 
     }
 

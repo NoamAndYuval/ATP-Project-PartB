@@ -55,7 +55,7 @@ public class RunCommunicateWithServers {
                                 toServer.flush();
                                 byte[] compressedMaze = (byte[]) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
                                 InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
-                                byte[] decompressedMaze = new byte[337/*CHANGESIZE ACCORDING TO YOU MAZE SIZE*/]; //allocating byte[] for the decompressed
+                                byte[] decompressedMaze = new byte[2524/*CHANGESIZE ACCORDING TO YOU MAZE SIZE*/]; //allocating byte[] for the decompressed
                                 is.read(decompressedMaze); //Fill decompressedMaze with bytes
 
                                 Maze maze = new Maze(decompressedMaze);
@@ -78,18 +78,15 @@ public class RunCommunicateWithServers {
                         public void clientStrategy(InputStream inFromServer,
                                                    OutputStream outToServer) {
                             try {
-                                ObjectOutputStream toServer = new
-                                        ObjectOutputStream(outToServer);
-                                ObjectInputStream fromServer = new
-                                        ObjectInputStream(inFromServer);
+                                ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
+                                ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                                 toServer.flush();
                                 MyMazeGenerator mg = new MyMazeGenerator();
                                 Maze maze = mg.generate(50, 50);
                                 maze.print();
                                 toServer.writeObject(maze); //send maze to server
                                 toServer.flush();
-                                Solution mazeSolution = (Solution)
-                                        fromServer.readObject();
+                                Solution mazeSolution = (Solution) fromServer.readObject();
                                 //read generated maze (compressed with MyCompressor) from server
 
                                 //Print Maze Solution retrieved from the server
@@ -118,8 +115,7 @@ public class RunCommunicateWithServers {
                         public void clientStrategy(InputStream inFromServer,
                                                    OutputStream outToServer) {
                             try {
-                                BufferedReader fromServer = new BufferedReader(new
-                                        InputStreamReader(inFromServer));
+                                BufferedReader fromServer = new BufferedReader(new InputStreamReader(inFromServer));
                                 PrintWriter toServer = new PrintWriter(outToServer);
 
                                 String message = "Client Message";

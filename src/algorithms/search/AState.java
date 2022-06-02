@@ -1,8 +1,9 @@
 package algorithms.search;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class AState {
+public abstract class AState  implements Serializable {
 
 
     private boolean visited;

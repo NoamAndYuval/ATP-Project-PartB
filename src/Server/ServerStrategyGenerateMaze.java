@@ -17,14 +17,29 @@ public class ServerStrategyGenerateMaze  implements IServerStrategy{
     }
     @Override
     public void applyStrategy(InputStream inFromClient, OutputStream outToClient) throws IOException, ClassNotFoundException {
+
         ObjectInputStream fromClient = new ObjectInputStream(inFromClient);
+        ObjectOutputStream toClient = new ObjectOutputStream(outToClient);
+
+
 
         MyMazeGenerator mazeGenerator = new MyMazeGenerator();
         int [] al = (int[]) fromClient.readObject();
         Maze maze = mazeGenerator.generate(al[0],al[1]);
-        MyCompressorOutputStream myCompressorOutputStream = new MyCompressorOutputStream(outToClient);
+
+        MyCompressorOutputStream myCompressorOutputStream = new MyCompressorOutputStream(new ByteArrayOutputStream());
         myCompressorOutputStream.write(maze.toByteArray());
-        myCompressorOutputStream.flush();
+
+        toClient.writeObject(((ByteArrayOutputStream)myCompressorOutputStream.getOut()).toByteArray());
+
+        toClient.flush();
+
+        toClient.close();
+        fromClient.close();
+
+
+
+
 
 
     }

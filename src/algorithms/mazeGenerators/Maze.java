@@ -7,12 +7,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.List;
 
 
-public class Maze {
+public class Maze implements Serializable {
     protected int row;
     protected int col;
     protected Position source;
