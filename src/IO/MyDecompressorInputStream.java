@@ -52,11 +52,6 @@ public class MyDecompressorInputStream extends InputStream {
                 b[i]= Integer.valueOf(temp).byteValue();
             }
 
-
-
-
-
-
         }catch (Exception e){
             return -1;
         }

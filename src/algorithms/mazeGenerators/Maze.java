@@ -39,17 +39,6 @@ public class Maze implements Serializable {
         this.col = ByteBuffer.wrap(Arrays.copyOfRange(bytes,4,8)).getInt();
         intMaze = new int[row][col];
         maze_matrix =new Position[row][col];
-//        byte [] bytes1 = ByteBuffer.wrap(Arrays.copyOfRange(bytes,24,bytes.length)).array();
-//        StringBuilder result = new StringBuilder();
-//        for (int i = 0; i < bytes1.length; i++) {
-//            byte val= bytes1[i];
-//            for (int j=0; j<8; j++) {
-//                result.append((int)(val >> (8-(j+1)) & 0x0001));
-//            }
-//        }
-
-//        String str = result.toString();
-//        maze_matrix = new Position[row][col];
         int index = 24;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j <col ; j++) {
@@ -205,14 +194,16 @@ public class Maze implements Serializable {
             target = maze_matrix[place][col - 1];
 
         }
+        Copy();
 
+    }
+    public void Copy() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 intMaze[i][j] = maze_matrix[i][j].getVal();
             }
         }
     }
-
     public byte[] toByteArray() {
         List<Byte> out = new ArrayList<>();
         byte[] rowInByte = ByteBuffer.allocate(4).putInt(row).array();

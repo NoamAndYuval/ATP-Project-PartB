@@ -33,7 +33,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
                 }
             }
         }
-
+        maze.Copy();
         return maze;
     }
 }

@@ -3,7 +3,7 @@ package test;
 import Client.Client;
 import Client.IClientStrategy;
 import IO.MyDecompressorInputStream;
-import Server.Server;
+import Server.*;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import algorithms.mazeGenerators.Maze;
@@ -16,8 +16,9 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class RunCommunicateWithServers {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 //Initializing servers
+
         Server mazeGeneratingServer = new Server(5400, 1000, new
                 ServerStrategyGenerateMaze());
         Server solveSearchProblemServer = new Server(5401, 1000, new
@@ -37,6 +38,7 @@ public class RunCommunicateWithServers {
         solveSearchProblemServer.stop();
 //stringReverserServer.stop();
     }
+
 
     private static void CommunicateWithServer_MazeGenerating() {
         try {
@@ -82,7 +84,7 @@ public class RunCommunicateWithServers {
                                 ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                                 toServer.flush();
                                 MyMazeGenerator mg = new MyMazeGenerator();
-                                Maze maze = mg.generate(50, 50);
+                                Maze maze = mg.generate(50,50);
                                 maze.print();
                                 toServer.writeObject(maze); //send maze to server
                                 toServer.flush();
