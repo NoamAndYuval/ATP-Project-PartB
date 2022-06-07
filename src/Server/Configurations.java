@@ -46,7 +46,7 @@ public class Configurations {
         return null;
     }
 
-    public static  ISearchingAlgorithm mazeSearchingAlgorithm() {
+    public static ISearchingAlgorithm mazeSearchingAlgorithm() {
         try {
             InputStream input = new FileInputStream("resources/config.properties");
             Properties prop = new Properties();
@@ -67,79 +67,5 @@ public class Configurations {
         return null;
     }
 
-    public static synchronized Solution FindSolutionFromResources(Maze maze) throws IOException, ClassNotFoundException {
-
-        byte[] mazeBytes = maze.toByteArray();
-
-        File dir = new File("resources/MazeAndSolution");
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null) {
-            for (File MazeDir : directoryListing) {
-                // Do something with child
-                File[] MazeDirList = MazeDir.listFiles();
-                if (MazeDirList==null)
-                    continue;
-                File MazeFile = MazeDirList[1];
-                File SulFile = MazeDirList[0];
-
-                byte[] lst = Files.readAllBytes(MazeFile.toPath());
-                if (Arrays.equals(lst, mazeBytes)) {
-
-                    FileInputStream fileInputStream = new FileInputStream(SulFile);
-                    ObjectInputStream fromSulFile = new ObjectInputStream(fileInputStream);
-                    Solution solution = (Solution) fromSulFile.readObject();
-                    fromSulFile.close();
-                    return solution;
-                }
-            }
-        }
-        return null;
-    }
-
-    public static synchronized void WriteSolutionToResources(Maze maze ,Solution solution){
-
-        try {
-            byte[] mazeBytes = maze.toByteArray();
-            File dir = new File("resources/MazeAndSolution");
-            File[] directoryListing = dir.listFiles();
-            File directory = new File("resources/MazeAndSolution/Maze" + directoryListing.length);
-            if (!directory.exists()) {
-                directory.mkdir();
-                // If you require it to make the entire directory path including parents,
-                // use directory.mkdirs(); here instead.
-            }
-            File MazeFile = new File(directory.getPath() + "/Maze");
-            File SolFile = new File(directory.getPath() + "/Sol");
-            MazeFile.getParentFile().mkdirs();
-            MazeFile.createNewFile();
-            SolFile.getParentFile().mkdirs();
-            SolFile.createNewFile();
-
-            FileOutputStream MazeOutputStream = new FileOutputStream(MazeFile);
-
-            FileOutputStream SolOutputStream = new FileOutputStream(SolFile);
-            ObjectOutputStream SolToFile = new ObjectOutputStream(SolOutputStream);
-
-
-            MazeOutputStream.write(mazeBytes);
-            SolToFile.writeObject(solution);
-
-            MazeOutputStream.flush();
-            SolToFile.flush();
-
-            MazeOutputStream.close();
-            SolToFile.close();
-
-
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
-
-
-
-
-    }
 
 }
