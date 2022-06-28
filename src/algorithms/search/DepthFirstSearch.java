@@ -8,7 +8,7 @@ public class DepthFirstSearch extends ASearchingAlgorithm {
     @Override
     public Solution solve(ISearchable Search) {
         Search.resetAState();
-        Stack<AState> stateStack = new Stack<>();
+        Stack<AState> stateStack = new Stack<AState>();
         stateStack.push(Search.getFirst());
         while (!stateStack.isEmpty()) {
             AState temp = stateStack.pop();

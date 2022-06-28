@@ -8,7 +8,7 @@ public class BreadthFirstSearch extends ASearchingAlgorithm {
 
     @Override
     public Solution solve(ISearchable Search) {
-        return BFSsolve(Search, new LinkedList<>());
+        return BFSsolve(Search, new LinkedList<AState>());
 
     }
 

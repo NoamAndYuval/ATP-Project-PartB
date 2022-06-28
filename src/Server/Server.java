@@ -1,68 +1,60 @@
 package Server;
 
-import java.io.IOException;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class Server {
     private int port;
-    private int listeningIntervalMS;
-    private IServerStrategy strategy;
+    private int listeningInterval;
+    private IServerStrategy serverStrategy;
     private volatile boolean stop;
-    private ExecutorService ClientExecutor;
+    private ExecutorService ClientExecutor ;
 
-
-    public Server(int port, int listeningIntervalMS, IServerStrategy strategy) {
+    public Server(int port, int listeningInterval, IServerStrategy serverStrategy) {
         this.port = port;
-        this.listeningIntervalMS = listeningIntervalMS;
-        this.strategy = strategy;
-        this.ClientExecutor = Executors.newFixedThreadPool(Configurations.ThreadPoolSize());
+        this.listeningInterval = listeningInterval;
+        this.serverStrategy = serverStrategy;
+        this.ClientExecutor = Executors.newFixedThreadPool((Configurations.ThreadPoolSize()));
     }
-
 
     public void start() {
         new Thread(this::StartServer).start();
     }
 
     private void StartServer() {
-        ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(port);
-            serverSocket.setSoTimeout(listeningIntervalMS);
-        } catch (Exception e) {
-            e.printStackTrace();
+            ServerSocket serverSocket = new ServerSocket(port);
+            serverSocket.setSoTimeout(listeningInterval);
 
-        }
-        while (!stop) {
-            try {
-                Socket clientSocket = serverSocket.accept();
-                // This thread will handle the new Client
-                System.out.println("New Client arrived");
-                handleClient handlerClient = new handleClient(clientSocket, strategy);
-                ClientExecutor.execute(handlerClient);
+            while (!stop) {
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    handleClient handleClient = new handleClient(clientSocket,this.serverStrategy);
+                    this.ClientExecutor.execute(handleClient);
+                } catch (SocketTimeoutException e) {
 
-
-            } catch (IOException e) {
-
-
+                }
             }
-        }
+            ClientExecutor.shutdown();
+            serverSocket.close();
+        } catch (IOException e) {
 
+        }
     }
 
     public void stop() {
-        System.out.println("Sever is stop....");
-        ClientExecutor.shutdown();
+
+
         stop = true;
 
     }
 }
-
 class handleClient implements Runnable {
 
     /**
@@ -87,7 +79,6 @@ class handleClient implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Client:"+clientSocket.toString()+" is running");
         try {
             serverStrategy.applyStrategy(clientSocket.getInputStream(), clientSocket.getOutputStream());
             clientSocket.close();

@@ -8,7 +8,7 @@ public class Solution  implements Serializable {
     private ArrayList<AState> stateList;
 
     public Solution() {
-        stateList = new ArrayList<>();
+        stateList = new ArrayList<AState>();
     }
 
     public ArrayList<AState> getSolutionPath() {

@@ -1,27 +1,30 @@
 package Client;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client {
     private InetAddress serverIP;
     private int serverPort;
-    private IClientStrategy strategy;
+    private IClientStrategy clientStrategy;
 
-    public Client(InetAddress serverIP, int serverPort, IClientStrategy strategy) {
+    public Client(InetAddress serverIP, int serverPort, IClientStrategy clientStrategy) {
         this.serverIP = serverIP;
         this.serverPort = serverPort;
-        this.strategy = strategy;
+        this.clientStrategy = clientStrategy;
     }
 
-
-    public void communicateWithServer() {
-        try(Socket serverSocket = new Socket(serverIP, serverPort)){
-            System.out.println("connected to server - IP = " + serverIP + ", Port = " + serverPort);
-            strategy.clientStrategy(serverSocket.getInputStream(), serverSocket.getOutputStream());
-        } catch (IOException e) {
+    public void start() {
+        try {
+            Thread.sleep(130);
+            Socket serverSocket = new Socket(serverIP, serverPort);
+            clientStrategy.clientStrategy(serverSocket.getInputStream(), serverSocket.getOutputStream());
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void communicateWithServer() {
+        start();
     }
 }

@@ -42,7 +42,7 @@ public class MyCompressorOutputStream extends OutputStream {
     @Override
     public void write(byte[]bytes)throws IOException{
         byte[] bytes1 = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 24, bytes.length)).array();
-        List<Byte> byteArrayList = new ArrayList<>();
+        List<Byte> byteArrayList = new ArrayList<Byte>();
         for (int i = 0; i <24 ; i++) {
             byteArrayList.add(bytes[i]);
         }

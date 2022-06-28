@@ -41,7 +41,7 @@ public class SimpleCompressorOutputStream extends OutputStream {
 
         byte[] bytes1 = ByteBuffer.wrap(Arrays.copyOfRange(b, 24, b.length)).array();
 
-        ArrayList<Integer> list = new ArrayList<>();
+        ArrayList<Integer> list = new ArrayList<Integer>();
         int count = 0;
         boolean Flag = true;
         for (int i = 0; i < bytes1.length; i++) {

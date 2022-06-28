@@ -15,7 +15,7 @@ public class SimpleMazeGenerator extends AMazeGenerator {
             int rd = (int) ((Math.random() * positionQueue.size()));
             Position t = positionQueue.get(rd);
             t.setVisited(true);
-            t.setVal(1);
+            t.setVal(0);
             positionQueue = maze.getNeighborhood(t, 1);
             ArrayList<Position> temp = new ArrayList<Position>();
             for (Position p : positionQueue) {

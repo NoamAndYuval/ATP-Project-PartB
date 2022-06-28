@@ -8,7 +8,7 @@ public class BestFirstSearch extends BreadthFirstSearch {
 
     @Override
     public Solution solve(ISearchable Search) {
-        Queue<AState> priorityQueue = new PriorityQueue<>(new AStateComparator());
+        Queue<AState> priorityQueue = new PriorityQueue<AState>(new AStateComparator());
         return BFSsolve(Search, priorityQueue);
     }
 

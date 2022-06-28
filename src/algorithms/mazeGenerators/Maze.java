@@ -151,7 +151,7 @@ public class Maze implements Serializable {
     }
 
     public ArrayList<Position> getNeighborhood(Position pos, int dis) {
-        ArrayList<Position> positionArrayList = new ArrayList<>();
+        ArrayList<Position> positionArrayList = new ArrayList<Position>();
         int x = pos.getRowIndex();
         int y = pos.getColumnIndex();
         if (x + dis < row) {
@@ -205,7 +205,7 @@ public class Maze implements Serializable {
         }
     }
     public byte[] toByteArray() {
-        List<Byte> out = new ArrayList<>();
+        List<Byte> out = new ArrayList<Byte>();
         byte[] rowInByte = ByteBuffer.allocate(4).putInt(row).array();
         byte[] colInByte = ByteBuffer.allocate(4).putInt(col).array();
         byte[] enterPosX = ByteBuffer.allocate(4).putInt(source.getRowIndex()).array();

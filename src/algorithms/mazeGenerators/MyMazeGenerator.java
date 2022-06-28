@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+
 
 public class MyMazeGenerator extends AMazeGenerator {
 

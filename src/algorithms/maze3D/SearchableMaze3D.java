@@ -42,7 +42,7 @@ public class SearchableMaze3D extends SearchableMaze {
     }
 
     public ArrayList<AState> getAllPossibleStates(AState state) {
-        ArrayList<AState> Neighbors = new ArrayList<>();
+        ArrayList<AState> Neighbors = new ArrayList<AState>();
         Maze3DState mazeState = (Maze3DState) state;
         int k = ((Position3D) (mazeState.getMyPos())).getDepthIndex();
         int i = mazeState.getMyPos().getRowIndex();

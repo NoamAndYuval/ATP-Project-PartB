@@ -63,17 +63,19 @@ public class ServerStrategySolveSearchProblem implements IServerStrategy {
                 File[] MazeDirList = MazeDir.listFiles();
                 if (MazeDirList == null)
                     continue;
-                File MazeFile = MazeDirList[1];
-                File SulFile = MazeDirList[0];
+                if (MazeDirList.length >= 2) {
+                    File MazeFile = MazeDirList[1];
+                    File SulFile = MazeDirList[0];
 
-                byte[] lst = Files.readAllBytes(MazeFile.toPath());
-                if (Arrays.equals(lst, mazeBytes)) {
+                    byte[] lst = Files.readAllBytes(MazeFile.toPath());
+                    if (Arrays.equals(lst, mazeBytes)) {
 
-                    FileInputStream fileInputStream = new FileInputStream(SulFile);
-                    ObjectInputStream fromSulFile = new ObjectInputStream(fileInputStream);
-                    Solution solution = (Solution) fromSulFile.readObject();
-                    fromSulFile.close();
-                    return solution;
+                        FileInputStream fileInputStream = new FileInputStream(SulFile);
+                        ObjectInputStream fromSulFile = new ObjectInputStream(fileInputStream);
+                        Solution solution = (Solution) fromSulFile.readObject();
+                        fromSulFile.close();
+                        return solution;
+                    }
                 }
             }
         }
